@@ -4,7 +4,7 @@ Art generated using random functions.
 
 ![An example from AutoImages](example.png)
 
-[A web version of AutoArt can be found here](https://pommicket.com/pommicket)
+[A (slower) web version of AutoArt can be found here](https://pommicket.com/pommicket)
 
 To run AutoArt, just download one of the [releases](https://github.com/pommicket/autoart/releases).
 You will need [ffmpeg](http://ffmpeg.org/) for AutoVideos, but not for AutoImages/Audio (and make sure it is in your PATH).  You can install it on Debian/Ubuntu with:
