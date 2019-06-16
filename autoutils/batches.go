@@ -20,7 +20,7 @@ along with AutoArt.  If not, see <https://www.gnu.org/licenses/>.
 package autoutils
 
 import (
-    "fmt"
+	"fmt"
 )
 
 /*
@@ -31,26 +31,27 @@ a message will be printed, starting with progress, and showing how many batches
 have been completed so far out of the total number of batches.
 */
 const batchSize = 32
-func RunInBatches(number int64, progress string, f func (n int64, errs chan<- error)) error {
-    nBatches := number / batchSize
-    errs := make(chan error)
-    for batch := int64(0); batch <= nBatches; batch++ {
-        fmt.Println(progress, batch+1, "/", nBatches+1)
-        thisBatchSize := batchSize
-        if batch == nBatches {
-            // Deal with case of last batch
-            thisBatchSize = int(number - nBatches * batchSize)
-        }
-        for task := 0; task < thisBatchSize; task++ {
-            go f(int64(task) + batchSize * batch, errs)
-        }
 
-        for completed := 0; completed < thisBatchSize; completed++ {
-            err := <-errs
-            if err != nil {
-                return err
-            }
-        }
-    }
-    return nil
+func RunInBatches(number int64, progress string, f func(n int64, errs chan<- error)) error {
+	nBatches := number / batchSize
+	errs := make(chan error)
+	for batch := int64(0); batch <= nBatches; batch++ {
+		fmt.Println(progress, batch+1, "/", nBatches+1)
+		thisBatchSize := batchSize
+		if batch == nBatches {
+			// Deal with case of last batch
+			thisBatchSize = int(number - nBatches*batchSize)
+		}
+		for task := 0; task < thisBatchSize; task++ {
+			go f(int64(task)+batchSize*batch, errs)
+		}
+
+		for completed := 0; completed < thisBatchSize; completed++ {
+			err := <-errs
+			if err != nil {
+				return err
+			}
+		}
+	}
+	return nil
 }

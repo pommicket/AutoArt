@@ -20,37 +20,39 @@ along with AutoArt.  If not, see <https://www.gnu.org/licenses/>.
 package autoart
 
 import (
-    "github.com/pommicket/autoart/autoutils"
-    "io"
+	"github.com/pommicket/autoart/autoutils"
+	"io"
 )
 
 func GenerateAudio(output io.Writer, duration float64, sampleRate int32,
-                   functionLength int, rectifier int) error {
-    samples := int64(duration * float64(sampleRate))
-    err := autoutils.WriteAudioHeader(output, samples, 1, sampleRate)
-    if err != nil { return err }
+	functionLength int, rectifier int) error {
+	samples := int64(duration * float64(sampleRate))
+	err := autoutils.WriteAudioHeader(output, samples, 1, sampleRate)
+	if err != nil {
+		return err
+	}
 
-    vars := make([]float64, 1)
-    const sampleBufferSize = 4096
-    sampleBuffer := make([]uint8, sampleBufferSize)
-    sampleBufferIndex := 0
+	vars := make([]float64, 1)
+	const sampleBufferSize = 4096
+	sampleBuffer := make([]uint8, sampleBufferSize)
+	sampleBufferIndex := 0
 
-    var function autoutils.Function
-    function.Generate(1, functionLength)
+	var function autoutils.Function
+	function.Generate(1, functionLength)
 
-    for s := int64(0); s < samples; s++ {
-        t := float64(s) / float64(sampleRate)
-        vars[0] = t
-        value := rectify(function.Evaluate(vars), rectifier)
-        sampleBuffer[sampleBufferIndex] = uint8(255 * value)
-        sampleBufferIndex++
-        if sampleBufferIndex == sampleBufferSize {
-            err = autoutils.WriteAudioSamples(output, sampleBuffer)
-            if err != nil {
-                return err
-            }
-            sampleBufferIndex = 0
-        }
-    }
-    return autoutils.WriteAudioSamples(output, sampleBuffer[:sampleBufferIndex])
+	for s := int64(0); s < samples; s++ {
+		t := float64(s) / float64(sampleRate)
+		vars[0] = t
+		value := rectify(function.Evaluate(vars), rectifier)
+		sampleBuffer[sampleBufferIndex] = uint8(255 * value)
+		sampleBufferIndex++
+		if sampleBufferIndex == sampleBufferSize {
+			err = autoutils.WriteAudioSamples(output, sampleBuffer)
+			if err != nil {
+				return err
+			}
+			sampleBufferIndex = 0
+		}
+	}
+	return autoutils.WriteAudioSamples(output, sampleBuffer[:sampleBufferIndex])
 }

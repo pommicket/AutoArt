@@ -20,46 +20,69 @@ along with AutoArt.  If not, see <https://www.gnu.org/licenses/>.
 package autoutils
 
 import (
-    "io"
-    "encoding/binary"
+	"encoding/binary"
+	"io"
 )
 
 // Write a header to writer. You need to decide ahead of time how many samples
 // you want.
 func WriteAudioHeader(writer io.Writer, nSamples int64, channels, sampleRate int32) error {
-    w := func (data interface{}) error {
-        return binary.Write(writer, binary.LittleEndian, data)
-    }
-    var err error
-    if err = w([]byte("RIFF")); err != nil { return err }
-    var chunkSize1 uint32 = 36 + uint32(nSamples)
-    if err = w(chunkSize1); err != nil { return err }
-    if err = w([]byte("WAVEfmt ")); err != nil { return err }
-    var subchunk1size uint32 = 16
-    if err = w(subchunk1size); err != nil { return err }
-    var audioFormat uint16 = 1
-    if err = w(audioFormat); err != nil { return err }
-    var nChannels uint16 = uint16(channels)
-    if err = w(nChannels); err != nil { return err }
-    var srate uint32 = uint32(sampleRate)
-    if err = w(srate); err != nil { return err }
-    var byteRate uint32 = srate * uint32(nChannels)
-    if err = w(byteRate); err != nil { return err }
-    var blockAlign uint16 = nChannels
-    if err = w(blockAlign); err != nil { return err }
-    var bitsPerSample uint16 = 8
-    if err = w(bitsPerSample); err != nil { return err }
-    if err = w([]byte("data")); err != nil { return err }
-    var chunkSize2 uint32 = uint32(nSamples) * uint32(nChannels)
-    if err = w(chunkSize2); err != nil { return err }
-    return nil
+	w := func(data interface{}) error {
+		return binary.Write(writer, binary.LittleEndian, data)
+	}
+	var err error
+	if err = w([]byte("RIFF")); err != nil {
+		return err
+	}
+	var chunkSize1 uint32 = 36 + uint32(nSamples)
+	if err = w(chunkSize1); err != nil {
+		return err
+	}
+	if err = w([]byte("WAVEfmt ")); err != nil {
+		return err
+	}
+	var subchunk1size uint32 = 16
+	if err = w(subchunk1size); err != nil {
+		return err
+	}
+	var audioFormat uint16 = 1
+	if err = w(audioFormat); err != nil {
+		return err
+	}
+	var nChannels uint16 = uint16(channels)
+	if err = w(nChannels); err != nil {
+		return err
+	}
+	var srate uint32 = uint32(sampleRate)
+	if err = w(srate); err != nil {
+		return err
+	}
+	var byteRate uint32 = srate * uint32(nChannels)
+	if err = w(byteRate); err != nil {
+		return err
+	}
+	var blockAlign uint16 = nChannels
+	if err = w(blockAlign); err != nil {
+		return err
+	}
+	var bitsPerSample uint16 = 8
+	if err = w(bitsPerSample); err != nil {
+		return err
+	}
+	if err = w([]byte("data")); err != nil {
+		return err
+	}
+	var chunkSize2 uint32 = uint32(nSamples) * uint32(nChannels)
+	if err = w(chunkSize2); err != nil {
+		return err
+	}
+	return nil
 }
-
 
 // Writes some samples to the writer. You will need to write a header before
 // any samples.
 func WriteAudioSamples(writer io.Writer, samples []uint8) error {
-    return binary.Write(writer, binary.LittleEndian, samples)
+	return binary.Write(writer, binary.LittleEndian, samples)
 }
 
 /*
@@ -72,12 +95,12 @@ you're using that many?!)
 */
 func WriteAudio(writer io.Writer, audio []uint8, channels, sampleRate int32) error {
 
-    err := WriteAudioHeader(writer, int64(len(audio)), channels, sampleRate)
-    if err != nil {
-        return err
-    }
-    if err = WriteAudioSamples(writer, audio); err != nil {
-        return err
-    }
-    return nil
+	err := WriteAudioHeader(writer, int64(len(audio)), channels, sampleRate)
+	if err != nil {
+		return err
+	}
+	if err = WriteAudioSamples(writer, audio); err != nil {
+		return err
+	}
+	return nil
 }
