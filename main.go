@@ -20,37 +20,37 @@ along with AutoArt.  If not, see <https://www.gnu.org/licenses/>.
 package main
 
 import (
-    "fmt"
-    "os"
-    "bufio"
+	"bufio"
+	"fmt"
+	"os"
 )
 
 func main() {
-    reader := bufio.NewReader(os.Stdin)
-    prompt := `Please select one of the following:
+	reader := bufio.NewReader(os.Stdin)
+	prompt := `Please select one of the following:
 1. AutoImages
 2. AutoVideos
 3. AutoAudio
 Please enter 1, 2, or 3 (default: 1): `
 
-    option, err := readInt64(reader, prompt, func (i int64) bool {
-        return i >= 1 && i <= 3
-    }, 1)
-    if err != nil {
-        fmt.Println("Error reading user input:", err)
-    }
+	option, err := readInt64(reader, prompt, func(i int64) bool {
+		return i >= 1 && i <= 3
+	}, 1)
+	if err != nil {
+		fmt.Println("Error reading user input:", err)
+	}
 
-    switch option {
+	switch option {
 	case 1:
-	    err = autoImages(reader)
+		err = autoImages(reader)
 	case 2:
 		err = autoVideos(reader)
-    case 3:
-        err = autoAudio(reader)
-    }
+	case 3:
+		err = autoAudio(reader)
+	}
 
-    if err != nil {
-        fmt.Println("An error occured:", err)
-    }
+	if err != nil {
+		fmt.Println("An error occured:", err)
+	}
 
 }
