@@ -6,7 +6,8 @@ Art generated using random functions.
 
 [A (slower) web version of AutoArt can be found here](https://pommicket.com/pommicket)
 
-To run AutoArt, just download one of the [releases](https://github.com/pommicket/autoart/releases).
+To run AutoArt, just download one of the [releases](https://github.com/pommicket/autoart/releases). Note that on Windows, when the images/videos/audios are done generating, the command prompt window will just close. Your images/videos/audios will be in whatever directory the executable was in.
+
 You will need [ffmpeg](http://ffmpeg.org/) for AutoVideos, but not for AutoImages/Audio (and make sure it is in your PATH).  You can install it on Debian/Ubuntu with:
 ```bash
 sudo apt install ffmpeg
