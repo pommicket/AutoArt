@@ -8,7 +8,16 @@ Art generated using random functions.
 
 To run AutoArt, just download one of the [releases](https://github.com/pommicket/autoart/releases). Note that on Windows, when the images/videos/audios are done generating, the command prompt window will just close. Your images/videos/audios will be in whatever directory the executable was in (unless you haven't installed ffmpeg).
 
-**You will need [ffmpeg](http://ffmpeg.org/) for AutoVideos**, but not for AutoImages/Audio (and make sure it is in your PATH).  You can install it on Debian/Ubuntu with:
+**You will need [ffmpeg](http://ffmpeg.org/) for AutoVideos**, but not for AutoImages/Audio.  
+
+On Windows, you can install ffmpeg by [downloading a build](https://ffmpeg.zeranoe.com/builds/). Just extract the zip, and copy the file `ffmpeg.exe` in the `bin` directory to the directory where `autoart.exe` is located.
+
+You can install ffmpeg on OS X via [homebrew](https://brew.sh) with
+```bash
+brew install ffmpeg
+```
+
+And you can install it on Debian/Ubuntu with:
 ```bash
 sudo apt install ffmpeg
 ```
